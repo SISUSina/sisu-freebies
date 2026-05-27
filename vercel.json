@@ -3,5 +3,8 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/stress-check", "destination": "/stress-check/index.html" }
+  ],
+  "redirects": [
+    { "source": "/", "destination": "/stress-check", "permanent": false }
   ]
 }
