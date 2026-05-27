@@ -1,10 +1,7 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/stress-check", "destination": "/stress-check/index.html" }
-  ],
+  "trailingSlash": true,
   "redirects": [
-    { "source": "/", "destination": "/stress-check", "permanent": false }
+    { "source": "/", "destination": "/stress-check/", "permanent": false }
   ]
 }
