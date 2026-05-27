@@ -109,12 +109,12 @@
     </div>
 
     <div class="exercise" id="exercise-bodyscan" hidden>
-      <h3 class="exercise-title"><em>Body-Scan</em>, geführt von Sina</h3>
+      <h3 class="exercise-title">Eine <em>Mini-Meditation</em>, für dich</h3>
 
-      <!-- Audio (wird aktiv, sobald die MP3 im Ordner liegt) -->
-      <audio id="bodyscan-audio" src="/stress-check/audio/bodyscan.mp3" preload="metadata"></audio>
+      <!-- Audio (Sina-Stimme) -->
+      <audio id="bodyscan-audio" src="/stress-check/audio/atem-meditation.m4a" preload="metadata"></audio>
       <div id="bodyscan-audio-ui" hidden>
-        <p class="exercise-sub">90 Sekunden. Setz dich bequem hin, dann drück Play.</p>
+        <p class="exercise-sub">Gut zwei Minuten. Setz dich bequem hin, schließ die Augen wenn du magst, dann drück Play.</p>
         <div class="audio-player">
           <button class="audio-play-btn" id="audio-play" aria-label="Abspielen">▶</button>
           <div class="audio-progress-wrap">
@@ -124,9 +124,9 @@
         </div>
       </div>
 
-      <!-- Fallback: Text-Body-Scan (solange noch keine Audio-Datei da ist) -->
+      <!-- Fallback: Text-Body-Scan (falls Audio nicht lädt) -->
       <div id="bodyscan-text-ui">
-        <p class="exercise-sub">Audio folgt — bis dahin: drück Start und lies die Worte, atme dazu tief.</p>
+        <p class="exercise-sub">Falls die Audio bei dir nicht startet: lies mit, atme dazu tief.</p>
         <div class="bodyscan-stage">
           <p class="bodyscan-text" id="bodyscan-text">Bereit?</p>
         </div>
