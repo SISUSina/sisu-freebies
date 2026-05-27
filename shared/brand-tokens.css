@@ -1,0 +1,46 @@
+/* SISU Brand Tokens
+   Quelle: vault/00_Foundation/brand-assets/farben.md
+   Spektrum-Farben (Salbei, Terrakotta) sind freebie-spezifische Erweiterungen.
+*/
+
+:root {
+  /* Primärfarben */
+  --beige: #ECE6E3;
+  --hellgrau: #F4F1F0;
+  --blau: #3E4B5C;
+  --weiss: #FFFFFF;
+
+  /* Akzent */
+  --gold: #D4A86D;
+  --gold-dunkel: #BF9056;
+
+  /* Sekundär */
+  --braun: #615244;
+  --silber: #C7C8CB;
+
+  /* Spektrum (Freebie-Erweiterung) */
+  --salbei: #9CAE94;
+  --terrakotta: #C57B5A;
+
+  /* Typografie */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-italic: 'DM Serif Display', Georgia, serif;
+  --font-body: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Layout */
+  --max-content: 720px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--beige);
+  color: var(--blau);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body { min-height: 100vh; }

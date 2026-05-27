@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ECE6E3">
+<title>Stress-Check · SISU</title>
+<meta name="description" content="Ein 2-Minuten-Stress-Check von Sina Valkonen. Fünf Fragen, eine Übung, kein Login.">
+
+<!-- TODO v1.1: self-hosted fonts (DSGVO) — siehe spec §7 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display:ital@1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../shared/brand-tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main class="wrap">
+
+  <!-- ========== VIEW 1: INTRO ========== -->
+  <section class="view view-intro" data-view="intro">
+    <div class="label">SISU — ein Geschenk für dich</div>
+    <h1 class="hero">
+      <span id="greeting">Schön, dass du da bist.</span><br>
+      Wie geht's dir <em>wirklich</em> gerade?
+    </h1>
+    <p class="lede">Fünf kurze Fragen. Keine E-Mail, kein Login. Am Ende eine Übung, die in 60 Sekunden spürbar etwas verändert.</p>
+    <div class="meta">
+      <span>Dauer<strong>2 Min</strong></span>
+      <span>Fragen<strong>5</strong></span>
+      <span>Privat<strong>Kein Tracking</strong></span>
+    </div>
+    <button class="btn btn-primary" data-action="start">Los geht's →</button>
+    <p class="footer-note">Mit <em>Ruhe</em> gemacht von Sina · SISU Fertility &amp; Mental Health</p>
+  </section>
+
+  <!-- ========== VIEW 2: QUESTIONS (eine Card, Inhalt wird via JS getauscht) ========== -->
+  <section class="view view-question" data-view="question" hidden>
+    <div class="card">
+      <div class="progress" id="progress">Frage 1 von 5</div>
+      <h2 class="question" id="question-text"></h2>
+      <p class="helper">Nimm dir einen Moment. Atme einmal aus. Dann antworte intuitiv.</p>
+
+      <div class="slider-block">
+        <div class="slider-labels">
+          <span id="label-low"></span>
+          <span id="label-high"></span>
+        </div>
+        <input type="range" min="0" max="10" value="5" id="slider" aria-label="Antwort-Skala 0 bis 10">
+        <div class="slider-value" id="slider-value">5</div>
+      </div>
+
+      <div class="actions">
+        <button class="link-btn" data-action="skip">Frage überspringen</button>
+        <button class="btn btn-primary" data-action="next">Weiter →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== VIEW 3: RESULT ========== -->
+  <section class="view view-result" data-view="result" hidden>
+
+    <div class="label">Deine Auswertung</div>
+    <h2 class="result-hero">Heute stehst du <em>hier</em>.</h2>
+
+    <!-- Spektrum -->
+    <div class="spectrum">
+      <div class="spectrum-score" id="spectrum-score-wrap">
+        <span class="spectrum-score-num" id="spectrum-score">0</span>
+        <span class="spectrum-score-of">/ 50</span>
+      </div>
+      <div class="spectrum-bar-wrap">
+        <div class="spectrum-bar"></div>
+        <div class="spectrum-marker" id="spectrum-marker"></div>
+      </div>
+      <div class="spectrum-labels">
+        <span>entspannt</span>
+        <span>unter Druck</span>
+        <span>auf Reserve</span>
+      </div>
+    </div>
+
+    <p class="narrative" id="narrative"></p>
+
+    <!-- Adaptive Übung: drei Container, einer wird per JS sichtbar -->
+    <div class="exercise" id="exercise-gratitude" hidden>
+      <h3 class="exercise-title">Drei kleine <em>Dankbarkeiten</em></h3>
+      <p class="exercise-sub">Schreib drei Dinge auf, für die du heute dankbar bist. Kleine zählen genauso.</p>
+      <ol class="gratitude-list">
+        <li><span class="g-num">1</span><input type="text" class="gratitude-input" placeholder="Heute bin ich dankbar für …"></li>
+        <li><span class="g-num">2</span><input type="text" class="gratitude-input" placeholder="…"></li>
+        <li><span class="g-num">3</span><input type="text" class="gratitude-input" placeholder="…"></li>
+      </ol>
+      <p class="exercise-foot">Hier eintippen oder lieber für dich aufschreiben — wie es sich besser anfühlt. Nichts wird gespeichert.</p>
+    </div>
+
+    <div class="exercise" id="exercise-breath" hidden>
+      <h3 class="exercise-title">Atemkreis: 4 — 7 — 8</h3>
+      <p class="exercise-sub">Drei Zyklen, etwa 60 Sekunden. Atme dem Kreis nach.</p>
+      <div class="breath-stage">
+        <div class="breath-phase" id="breath-phase">Bereit?</div>
+        <div class="breath-circle-wrap">
+          <div class="breath-circle" id="breath-circle"></div>
+        </div>
+      </div>
+      <button class="btn btn-secondary" data-action="breath-toggle" id="breath-toggle">Start</button>
+    </div>
+
+    <div class="exercise" id="exercise-bodyscan" hidden>
+      <h3 class="exercise-title"><em>Body-Scan</em>, geführt von Sina</h3>
+
+      <!-- Audio (wird aktiv, sobald die MP3 im Ordner liegt) -->
+      <audio id="bodyscan-audio" src="audio/bodyscan.mp3" preload="metadata"></audio>
+      <div id="bodyscan-audio-ui" hidden>
+        <p class="exercise-sub">90 Sekunden. Setz dich bequem hin, dann drück Play.</p>
+        <div class="audio-player">
+          <button class="audio-play-btn" id="audio-play" aria-label="Abspielen">▶</button>
+          <div class="audio-progress-wrap">
+            <div class="audio-progress" id="audio-progress"></div>
+          </div>
+          <span class="audio-time" id="audio-time">0:00</span>
+        </div>
+      </div>
+
+      <!-- Fallback: Text-Body-Scan (solange noch keine Audio-Datei da ist) -->
+      <div id="bodyscan-text-ui">
+        <p class="exercise-sub">Audio folgt — bis dahin: drück Start und lies die Worte, atme dazu tief.</p>
+        <div class="bodyscan-stage">
+          <p class="bodyscan-text" id="bodyscan-text">Bereit?</p>
+        </div>
+        <button class="btn btn-secondary" data-action="bodyscan-toggle" id="bodyscan-toggle">Start</button>
+      </div>
+    </div>
+
+    <!-- CTA: ein Container, drei Varianten — JS zeigt die passende -->
+    <div class="cta cta-green" hidden>
+      <h3 class="cta-title">Wenn du diese Ausgeglichenheit <em>öfter</em> spüren willst</h3>
+      <p class="cta-text">Für mehr Ruhe und Klarheit auch im Arbeitsalltag — bei SISU mache ich daraus Workshops, Vorträge und 1:1-Begleitung. Fundiert, ohne Floskeln.</p>
+      <a class="btn btn-primary" href="https://www.sisu-coaching.de" target="_blank" rel="noopener">Erfahre mehr für dein Unternehmen →</a>
+    </div>
+
+    <div class="cta cta-yellow" hidden>
+      <h3 class="cta-title">Wenn du <em>mehr</em> Entspannung brauchst</h3>
+      <p class="cta-text">Was du hier gespürt hast, kannst du auch im Arbeitsalltag etablieren. Bei SISU mache ich daraus Workshops, Vorträge und 1:1-Begleitung. Fundiert, ohne Floskeln.</p>
+      <a class="btn btn-primary" href="https://www.sisu-coaching.de" target="_blank" rel="noopener">Erfahre mehr für dein Unternehmen →</a>
+    </div>
+
+    <div class="cta cta-red" hidden>
+      <h3 class="cta-title">Wenn du wieder in <em>Ruhe</em> kommen willst</h3>
+      <p class="cta-text">Was du hier spürst, kennen viele Entscheiderinnen — und oft erst dann, wenn es schon spät ist. Bei SISU mache ich daraus Workshops, Vorträge und 1:1-Begleitung. Fundiert, ohne Floskeln.</p>
+      <a class="btn btn-primary" href="https://www.sisu-coaching.de" target="_blank" rel="noopener">Erfahre mehr für dein Unternehmen →</a>
+    </div>
+
+    <div class="share">
+      <button class="link-btn" data-action="share" id="share-btn">Diesen Check teilen</button>
+      <span class="share-confirm" id="share-confirm" aria-live="polite"></span>
+    </div>
+
+    <p class="footer-note">Mit <em>Ruhe</em> gemacht von Sina · SISU Fertility &amp; Mental Health</p>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
