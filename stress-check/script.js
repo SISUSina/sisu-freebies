@@ -247,19 +247,21 @@ let bodyTimers = [];
 let bodyRunning = false;
 
 function initBodyScan() {
-  // Audio-Datei vorhanden? Dann Audio-UI zeigen, Text-UI ausblenden.
   const audio = $('#bodyscan-audio');
   const audioUI = $('#bodyscan-audio-ui');
   const textUI = $('#bodyscan-text-ui');
 
-  audio.addEventListener('loadedmetadata', () => {
-    if (audio.duration > 0 && !isNaN(audio.duration)) {
-      audioUI.hidden = false;
-      textUI.hidden = true;
-      initAudioPlayer(audio);
-    }
+  // Audio-UI standardmäßig zeigen, Text-Fallback verstecken.
+  // Bei Lade-Fehler wird umgeschaltet.
+  audioUI.hidden = false;
+  textUI.hidden = true;
+  initAudioPlayer(audio);
+
+  // Falls Audio nicht lädt: zurück zum Text-Fallback
+  audio.addEventListener('error', () => {
+    audioUI.hidden = true;
+    textUI.hidden = false;
   }, { once: true });
-  audio.addEventListener('error', () => { /* Fallback bleibt Text */ }, { once: true });
 
   const toggle = $('#bodyscan-toggle');
   toggle.onclick = () => {
@@ -277,16 +279,30 @@ function initAudioPlayer(audio) {
   const timeEl = $('#audio-time');
 
   const fmt = (s) => {
+    if (!s || isNaN(s)) return '–:––';
     const m = Math.floor(s / 60);
     const sec = Math.floor(s % 60).toString().padStart(2, '0');
     return `${m}:${sec}`;
   };
 
-  timeEl.textContent = fmt(audio.duration);
+  const updateTime = () => {
+    if (audio.duration && !isNaN(audio.duration)) {
+      timeEl.textContent = fmt(audio.duration - audio.currentTime);
+    } else {
+      timeEl.textContent = '–:––';
+    }
+  };
+
+  // Anzeige initialisieren (auch wenn metadata noch nicht geladen)
+  updateTime();
+  audio.addEventListener('loadedmetadata', updateTime);
+  audio.addEventListener('durationchange', updateTime);
 
   playBtn.addEventListener('click', () => {
     if (audio.paused) {
-      audio.play();
+      audio.play().catch((err) => {
+        console.warn('Audio konnte nicht starten:', err);
+      });
       playBtn.classList.add('playing');
     } else {
       audio.pause();
@@ -295,15 +311,17 @@ function initAudioPlayer(audio) {
   });
 
   audio.addEventListener('timeupdate', () => {
-    const pct = (audio.currentTime / audio.duration) * 100;
-    progress.style.width = `${pct}%`;
-    timeEl.textContent = fmt(audio.duration - audio.currentTime);
+    if (audio.duration && !isNaN(audio.duration)) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progress.style.width = `${pct}%`;
+      timeEl.textContent = fmt(audio.duration - audio.currentTime);
+    }
   });
 
   audio.addEventListener('ended', () => {
     playBtn.classList.remove('playing');
     progress.style.width = '0%';
-    timeEl.textContent = fmt(audio.duration);
+    updateTime();
   });
 }
 
