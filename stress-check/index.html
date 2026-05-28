@@ -26,7 +26,8 @@
       <span id="greeting">Schön, dass du da bist.</span><br>
       Wie geht's dir <em>wirklich</em> gerade?
     </h1>
-    <p class="lede">Fünf kurze Fragen. Keine E-Mail, kein Login. Am Ende eine Übung, die in 60 Sekunden spürbar etwas verändert.</p>
+    <p class="lede">Fünf kurze Fragen. Keine E-Mail, kein Login. Am Ende eine kleine Übung, die spürbar etwas verändert.</p>
+    <p class="lede-soft">Mach den Check gerne mehrmals oder jeden Tag — du wirst sehen, dass dein Ergebnis (und damit auch die passende Übung) sich verändert. Es gibt <em>drei verschiedene</em> Übungen, je nachdem wie es dir gerade geht.</p>
     <div class="meta">
       <span>Dauer<strong>2 Min</strong></span>
       <span>Fragen<strong>5</strong></span>
@@ -88,17 +89,23 @@
     <div class="exercise" id="exercise-gratitude" hidden>
       <h3 class="exercise-title">Drei kleine <em>Dankbarkeiten</em></h3>
       <p class="exercise-sub">Schreib drei Dinge auf, für die du heute dankbar bist. Kleine zählen genauso.</p>
-      <ol class="gratitude-list">
-        <li><span class="g-num">1</span><input type="text" class="gratitude-input" placeholder="Heute bin ich dankbar für …"></li>
-        <li><span class="g-num">2</span><input type="text" class="gratitude-input" placeholder="…"></li>
-        <li><span class="g-num">3</span><input type="text" class="gratitude-input" placeholder="…"></li>
-      </ol>
+      <div class="gratitude-stage" id="gratitude-stage">
+        <ol class="gratitude-list">
+          <li><span class="g-num">1</span><input type="text" class="gratitude-input" placeholder="Heute bin ich dankbar für …"></li>
+          <li><span class="g-num">2</span><input type="text" class="gratitude-input" placeholder="…"></li>
+          <li><span class="g-num">3</span><input type="text" class="gratitude-input" placeholder="…"></li>
+        </ol>
+      </div>
+      <button class="btn btn-secondary done-btn" data-action="gratitude-done" id="gratitude-done">✓ Erledigt</button>
       <p class="exercise-foot">Hier eintippen oder lieber für dich aufschreiben — wie es sich besser anfühlt. Nichts wird gespeichert.</p>
     </div>
 
     <div class="exercise" id="exercise-breath" hidden>
-      <h3 class="exercise-title">Atemkreis: 4 — 7 — 8</h3>
-      <p class="exercise-sub">Drei Zyklen, etwa 60 Sekunden. Atme dem Kreis nach.</p>
+      <h3 class="exercise-title"><em>Atemkreis</em> 4 — 7 — 8</h3>
+      <p class="exercise-sub">
+        <strong>4</strong> Sekunden einatmen · <strong>7</strong> Sekunden halten · <strong>8</strong> Sekunden ausatmen.<br>
+        Mindestens drei Zyklen — gern länger, wenn es dir gut tut. Atme dem Kreis nach.
+      </p>
       <div class="breath-stage">
         <div class="breath-phase" id="breath-phase">Bereit?</div>
         <div class="breath-circle-wrap">
@@ -164,6 +171,7 @@
 
 </main>
 
+<script src="/stress-check/lib/confetti.min.js"></script>
 <script src="/stress-check/script.js"></script>
 </body>
 </html>

@@ -35,10 +35,41 @@ const QUESTIONS = [
 ];
 
 const NARRATIVES = {
-  green: 'Schön — dein Nervensystem geht heute gut. Das ist nicht selbstverständlich. Nimm dir einen Moment, das auch wirklich zu spüren.',
+  green: 'Schön — deinem Nervensystem geht es heute richtig gut. Das ist nicht selbstverständlich. Nimm dir einen Moment, das auch wirklich zu spüren.',
   yellow: 'Dein Körper hält. Aber er meldet sich. Kein Drama. Aber auch kein Zustand, der sich von allein auflöst.',
-  red: 'Du läufst auf Reserve. Das ist keine Schwäche, das ist Information. Dein Body Budget ist im Minus. Die nächsten 60 Sekunden sind ein Anfang.',
+  red: 'Du läufst auf Reserve. Das ist keine Schwäche, sondern dein Body Budget ist im Minus. Nimm dir zwei Minuten Zeit für dich — die nächste Übung ist ein Anfang.',
 };
+
+// Konfetti im SISU-Stil (Salbei + Gold + Terrakotta, nicht knallbunt)
+const SISU_CONFETTI_COLORS = ['#9CAE94', '#D4A86D', '#BF9056', '#C57B5A', '#ECE6E3'];
+
+function celebrate(originY = 0.45) {
+  if (typeof confetti !== 'function') return;
+  confetti({
+    particleCount: 80,
+    spread: 70,
+    startVelocity: 35,
+    origin: { x: 0.5, y: originY },
+    colors: SISU_CONFETTI_COLORS,
+    scalar: 0.9,
+    gravity: 0.8,
+    drift: 0,
+    ticks: 250,
+  });
+  // Zweite, sanfte Welle für längeres Ausklingen
+  setTimeout(() => {
+    confetti({
+      particleCount: 40,
+      spread: 90,
+      startVelocity: 25,
+      origin: { x: 0.5, y: originY - 0.05 },
+      colors: SISU_CONFETTI_COLORS,
+      scalar: 0.7,
+      gravity: 0.6,
+      ticks: 300,
+    });
+  }, 350);
+}
 
 const BODYSCAN_LINES = [
   { text: 'Schultern …', delay: 0 },
@@ -378,8 +409,26 @@ function initShare() {
 
 // ============ Boot ============
 
+function initGratitudeDone() {
+  const btn = $('#gratitude-done');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    // Konfetti-Origin so setzen, dass es über der Karte regnet
+    const card = $('#gratitude-stage');
+    const originY = card
+      ? card.getBoundingClientRect().top / window.innerHeight
+      : 0.4;
+    celebrate(Math.max(0.1, originY));
+    // Button-State: kurz feiern, dann zurückkehren — falls jemand nochmal will
+    btn.classList.add('done');
+    btn.textContent = '✓ Du hast es dir gerade gut getan';
+    btn.disabled = true;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initIntro();
   initQuestions();
   initShare();
+  initGratitudeDone();
 });

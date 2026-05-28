@@ -68,7 +68,24 @@ h1.hero em, h2.result-hero em, .reframe-question em, .cta-title em {
   font-size: 18px;
   color: var(--braun);
   max-width: 540px;
+  margin-bottom: 24px;
+}
+
+.lede-soft {
+  font-size: 15px;
+  color: var(--braun);
+  max-width: 540px;
   margin-bottom: 56px;
+  font-style: italic;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+
+.lede-soft em {
+  font-family: var(--font-italic);
+  font-style: italic;
+  color: var(--gold-dunkel);
+  font-size: 1.05em;
 }
 
 .meta {
@@ -433,6 +450,30 @@ input[type="range"]::-webkit-slider-thumb:active { transform: scale(1.1); }
   margin-top: 24px;
   line-height: 1.5;
 }
+
+/* "Erledigt"-Button (Goodie nach Übungs-Abschluss) */
+.done-btn {
+  margin-top: 8px;
+  padding: 12px 28px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  transition: all 0.25s ease;
+}
+
+.done-btn.done {
+  background: var(--gold);
+  color: var(--blau);
+  border-color: var(--gold);
+  cursor: default;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+  font-family: var(--font-display);
+  opacity: 1;
+}
+
+.done-btn:disabled { opacity: 1; }
 
 /* Atemkreis */
 .breath-stage {
