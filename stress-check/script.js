@@ -40,8 +40,11 @@ const NARRATIVES = {
   red: 'Du läufst auf Reserve. Das ist keine Schwäche, sondern dein Body Budget ist im Minus. Nimm dir zwei Minuten Zeit für dich — die nächste Übung ist ein Anfang.',
 };
 
-// Konfetti im SISU-Stil (Salbei + Gold + Terrakotta, nicht knallbunt)
+// Konfetti im SISU-Stil (Salbei + Gold + Terrakotta, nicht knallbunt) — für Grün
 const SISU_CONFETTI_COLORS = ['#9CAE94', '#D4A86D', '#BF9056', '#C57B5A', '#ECE6E3'];
+
+// Reines Gold-Glitzer — für Rot-Bucket (Audio-Ende)
+const SISU_GOLD_GLITTER = ['#D4A86D', '#BF9056', '#E5C58F', '#F2E2C5'];
 
 function celebrate(originY = 0.45) {
   if (typeof confetti !== 'function') return;
@@ -69,6 +72,31 @@ function celebrate(originY = 0.45) {
       ticks: 300,
     });
   }, 350);
+}
+
+// Sanfter Gold-Glitzerregen, der über einer Karte herunterrieselt
+function goldGlitter(originY = 0.3) {
+  if (typeof confetti !== 'function') return;
+  // Wiederholt sanft, damit es wie ein leichter Regen wirkt — nicht wie ein Knall
+  const burst = (count, delay = 0) => {
+    setTimeout(() => {
+      confetti({
+        particleCount: count,
+        spread: 80,
+        startVelocity: 18,
+        origin: { x: 0.5, y: originY },
+        colors: SISU_GOLD_GLITTER,
+        scalar: 0.55,
+        gravity: 0.45,
+        ticks: 400,
+        shapes: ['circle'],
+        disableForReducedMotion: true,
+      });
+    }, delay);
+  };
+  burst(60, 0);
+  burst(40, 400);
+  burst(30, 850);
 }
 
 const BODYSCAN_LINES = [
@@ -353,15 +381,14 @@ function initAudioPlayer(audio) {
     playBtn.classList.remove('playing');
     progress.style.width = '0%';
     updateTime();
-    // Schluss-Goodie: Goldglow auf der Karte + warmer Schlusstext einblenden
+    // Schluss-Goodie: Schlusstext einblenden + Gold-Glitzerregen über der Karte
     const card = $('#exercise-bodyscan');
     const endMsg = $('#audio-end-message');
-    if (card) {
-      card.classList.remove('glow');
-      void card.offsetWidth; // reflow → Animation kann neu starten
-      card.classList.add('glow');
-    }
     if (endMsg) endMsg.hidden = false;
+    if (card) {
+      const originY = Math.max(0.05, card.getBoundingClientRect().top / window.innerHeight);
+      goldGlitter(originY);
+    }
   });
 }
 
