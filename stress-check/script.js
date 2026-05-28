@@ -353,6 +353,15 @@ function initAudioPlayer(audio) {
     playBtn.classList.remove('playing');
     progress.style.width = '0%';
     updateTime();
+    // Schluss-Goodie: Goldglow auf der Karte + warmer Schlusstext einblenden
+    const card = $('#exercise-bodyscan');
+    const endMsg = $('#audio-end-message');
+    if (card) {
+      card.classList.remove('glow');
+      void card.offsetWidth; // reflow → Animation kann neu starten
+      card.classList.add('glow');
+    }
+    if (endMsg) endMsg.hidden = false;
   });
 }
 
