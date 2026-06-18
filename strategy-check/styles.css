@@ -54,6 +54,21 @@ h1.hero {
 .pink, em.pink { color: var(--pink) !important; font-style: italic; }
 .grand-cta-title em.pink { color: var(--pink) !important; }
 
+.hero-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 340px;
+  object-fit: cover;
+  object-position: center 30%;
+  border-radius: 18px;
+  margin: 0 0 32px;
+  box-shadow: 0 24px 60px -28px rgba(62, 75, 92, 0.35);
+}
+@media (max-width: 600px) {
+  .hero-img { max-height: 240px; border-radius: 14px; margin-bottom: 24px; }
+}
+
 .hero-sub {
   font-family: var(--font-body);
   font-size: 16px;
