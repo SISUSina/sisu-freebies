@@ -14,7 +14,9 @@
 }
 
 .view { animation: fadeIn 0.35s ease both; }
-.view[hidden] { display: none; }
+/* hidden muss IMMER gewinnen — sonst überstimmt display:flex der Answer-Container
+   das Verstecken (Bug: Likert-Optionen erschienen bei Multi/Freetext-Fragen). */
+[hidden] { display: none !important; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
@@ -47,6 +49,10 @@ h1.hero {
   font-style: italic;
   color: var(--gold-dunkel);
 }
+
+/* Pink-Catcher — sparsam für einzelne Highlight-Wörter */
+.pink, em.pink { color: var(--pink) !important; font-style: italic; }
+.grand-cta-title em.pink { color: var(--pink) !important; }
 
 .hero-sub {
   font-family: var(--font-body);
@@ -118,7 +124,7 @@ h1.hero {
   font-size: 16px; line-height: 1.5; color: var(--blau);
 }
 .stat-list li::before {
-  content: '▪'; position: absolute; left: 0; color: var(--gold-dunkel);
+  content: '▪'; position: absolute; left: 0; color: var(--pink);
 }
 .stat-list .src { display: block; font-size: 12px; color: var(--silber); letter-spacing: 0.06em; margin-top: 2px; }
 
